@@ -1,7 +1,6 @@
 import { useState } from "react";
 import AddThoughtButton from "./components/AddThoughtButton";
 import AddThoughtModal from "./components/AddThoughtModal";
-import CounterButton from "./components/CounterButton";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +10,6 @@ function App() {
     <div>
       <h1>Vite + React</h1>
 
-      <CounterButton />
       <AddThoughtButton onClick={() => setIsOpen(true)} />
       {isOpen && (
         <AddThoughtModal
