@@ -1,9 +1,11 @@
 import { useState } from "react";
 import AddThoughtButton from "./components/AddThoughtButton";
+import AddThoughtModal from "./components/AddThoughtModal";
 import CounterButton from "./components/CounterButton";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
+  const [thoughts, setThoughts] = useState<string[]>([]);
 
   return (
     <div>
@@ -12,19 +14,23 @@ function App() {
       <CounterButton />
       <AddThoughtButton onClick={() => setIsOpen(true)} />
       {isOpen && (
-        <div
-          style={{
-            border: "1px solid black",
-            padding: "1rem",
-            marginTop: "1rem",
-          }}
-        >
-          <h2>Write a thought!</h2>
-          <textarea placeholder="Write here" rows={4} cols={30}></textarea>
-          <br />
-          <button onClick={() => setIsOpen(false)}>Stäng</button>
-        </div>
+        <AddThoughtModal
+          onSubmit={(thought) => setThoughts([...thoughts, thought])}
+          onClose={() => setIsOpen(false)}
+        />
       )}
+      <div style={{ marginTop: "2rem" }}>
+        <h2>Thought feed</h2>
+        {thoughts.length === 0 ? (
+          <p>No thoughts, head empty...</p>
+        ) : (
+          <ul>
+            {thoughts.map((thought, index) => (
+              <li key={index}>{thought}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
