@@ -2,12 +2,18 @@ import { useState } from "react";
 import AddThoughtButton from "./components/AddThoughtButton";
 import AddThoughtModal from "./components/AddThoughtModal";
 
+type Thought = { id: number; text: string };
+
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [thoughts, setThoughts] = useState<string[]>([]);
+  const [thoughts, setThoughts] = useState<Thought[]>([]);
 
-  const handleDeleteThought = (indexToRemove: number) => {
-    setThoughts(thoughts.filter((_, index) => index !== indexToRemove));
+  const handleAddThought = (text: string) => {
+    setThoughts([{ id: Date.now(), text }, ...thoughts]);
+  };
+
+  const handleDeleteThought = (id: number) => {
+    setThoughts(thoughts.filter((t) => t.id !== id));
   };
 
   return (
@@ -17,7 +23,10 @@ function App() {
       <AddThoughtButton onClick={() => setIsOpen(true)} />
       {isOpen && (
         <AddThoughtModal
-          onSubmit={(thought) => setThoughts([...thoughts, thought])}
+          onSubmit={(thought) => {
+            handleAddThought(thought);
+            setIsOpen(false);
+          }}
           onClose={() => setIsOpen(false)}
         />
       )}
@@ -29,10 +38,10 @@ function App() {
           <ul>
             {thoughts.map((thought, index) => (
               <li key={index}>
-                {thought}
+                {thought.text}
                 <button
-                  onClick={() => handleDeleteThought(index)}
-                  aria-label={`delete-thought-${index}`}
+                  onClick={() => handleDeleteThought(thought.id)}
+                  aria-label={`delete-thought-${thought.id}`}
                   style={{ marginLeft: "1rem" }}
                 >
                   Delete

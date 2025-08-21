@@ -35,4 +35,29 @@ describe("App", () => {
     // Check thought no longer in DOM
     expect(screen.queryByText("My test thought")).not.toBeInTheDocument;
   });
+
+  it("renders latest thought first", () => {
+    render(<App />);
+
+    // Open modal and add first thought
+    fireEvent.click(screen.getByText("Add Thought!"));
+    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+      target: { value: "First thought" },
+    });
+    fireEvent.submit(screen.getByLabelText("thought-form"));
+
+    // Open modal and add second thought
+    fireEvent.click(screen.getByText("Add Thought!"));
+    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+      target: { value: "Second thought" },
+    });
+    fireEvent.submit(screen.getByLabelText("thought-form"));
+
+    // Get all list items
+    const items = screen.getAllByRole("listitem");
+
+    // Check order: latest first
+    expect(items[0]).toHaveTextContent("Second thought");
+    expect(items[1]).toHaveTextContent("First thought");
+  });
 });
