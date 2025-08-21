@@ -29,6 +29,12 @@ function AddThoughtModal({ onSubmit, onClose }: AddThoughtModalProps) {
         placeholder="Write here"
         rows={4}
         cols={30}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e);
+          }
+        }}
       />
       <br />
       <button type="submit">Submit</button>

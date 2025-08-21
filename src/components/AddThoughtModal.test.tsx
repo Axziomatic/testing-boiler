@@ -33,4 +33,23 @@ describe("AddThoughtModal", () => {
     expect(handleClose).toHaveBeenCalled();
     expect(handleSubmit).not.toHaveBeenCalled();
   });
+
+  it("submits the form when Enter is pressed in the textarea", () => {
+    const handleSubmit = vi.fn();
+    const handleClose = vi.fn();
+
+    render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
+
+    const textarea = screen.getByPlaceholderText("Write here");
+
+    // Write a thought
+    fireEvent.change(textarea, { target: { value: "Enter thought" } });
+
+    // Hit Enter
+    fireEvent.keyDown(textarea, { key: "Enter", code: "Enter", charCode: 13 });
+
+    // Expected: handleSubmit is called
+    expect(handleSubmit).toHaveBeenCalledWith("Enter thought");
+    expect(handleClose).toHaveBeenCalled();
+  });
 });
