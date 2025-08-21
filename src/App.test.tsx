@@ -1,12 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 
-describe("App", () => {
-  it("should renders headline", () => {
-    render(<App />);
-    const headline = screen.getByText("Vite + React");
-    expect(headline).toBeInTheDocument();
+describe("App with localStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
   it("should allow user to add and delete a thought", () => {
@@ -59,5 +57,42 @@ describe("App", () => {
     // Check order: latest first
     expect(items[0]).toHaveTextContent("Second thought");
     expect(items[1]).toHaveTextContent("First thought");
+  });
+
+  it("saves new thoughts to localStorage and deletes them", () => {
+    render(<App />);
+
+    // Mock localStorage.setItem to track calls
+    const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+
+    // Add thought
+    fireEvent.click(screen.getByText("Add Thought!"));
+    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+      target: { value: "Persistent thought" },
+    });
+    fireEvent.submit(screen.getByLabelText("thought-form"));
+
+    // Check that a thought is in localStorage
+    expect(setItemSpy).toHaveBeenCalledWith(
+      "thoughts",
+      expect.stringContaining("Persistent thought")
+    );
+
+    // Check thought is visible in list
+    expect(screen.getByText("Persistent thought")).toBeInTheDocument();
+
+    // Click delete-button
+    fireEvent.click(screen.getByText("Delete"));
+
+    // Check that thought is removed from DOM
+    expect(screen.queryByText("Persistent thought")).not.toBeInTheDocument();
+
+    // Check that localStorage is updated after delete
+    const storedThoughts = JSON.parse(localStorage.getItem("thoughts") || "[]");
+    expect(
+      storedThoughts.find((t: any) => t.text === "Persistent thought")
+    ).toBeUndefined();
+
+    setItemSpy.mockRestore();
   });
 });

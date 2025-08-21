@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddThoughtButton from "./components/AddThoughtButton";
 import AddThoughtModal from "./components/AddThoughtModal";
 
@@ -8,18 +8,31 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [thoughts, setThoughts] = useState<Thought[]>([]);
 
+  useEffect(() => {
+    const stored = localStorage.getItem("thoughts");
+    if (stored) {
+      setThoughts(JSON.parse(stored));
+    }
+  }, []);
+
+  const saveToLocalStorage = (updatedThoughts: Thought[]) => {
+    localStorage.setItem("thoughts", JSON.stringify(updatedThoughts));
+  };
+
   const handleAddThought = (text: string) => {
-    setThoughts([{ id: Date.now(), text }, ...thoughts]);
+    const newThoughts = [{ id: Date.now(), text }, ...thoughts];
+    setThoughts(newThoughts);
+    saveToLocalStorage(newThoughts);
   };
 
   const handleDeleteThought = (id: number) => {
-    setThoughts(thoughts.filter((t) => t.id !== id));
+    const updatedThoughts = thoughts.filter((t) => t.id !== id);
+    setThoughts(updatedThoughts);
+    saveToLocalStorage(updatedThoughts);
   };
 
   return (
     <div>
-      <h1>Vite + React</h1>
-
       <AddThoughtButton onClick={() => setIsOpen(true)} />
       {isOpen && (
         <AddThoughtModal
@@ -36,8 +49,8 @@ function App() {
           <p>No thoughts, head empty...</p>
         ) : (
           <ul>
-            {thoughts.map((thought, index) => (
-              <li key={index}>
+            {thoughts.map((thought) => (
+              <li key={thought.id}>
                 {thought.text}
                 <button
                   onClick={() => handleDeleteThought(thought.id)}
