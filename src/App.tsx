@@ -6,6 +6,10 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [thoughts, setThoughts] = useState<string[]>([]);
 
+  const handleDeleteThought = (indexToRemove: number) => {
+    setThoughts(thoughts.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <div>
       <h1>Vite + React</h1>
@@ -24,7 +28,16 @@ function App() {
         ) : (
           <ul>
             {thoughts.map((thought, index) => (
-              <li key={index}>{thought}</li>
+              <li key={index}>
+                {thought}
+                <button
+                  onClick={() => handleDeleteThought(index)}
+                  aria-label={`delete-thought-${index}`}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  Delete
+                </button>
+              </li>
             ))}
           </ul>
         )}
