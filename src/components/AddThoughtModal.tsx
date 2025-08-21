@@ -8,7 +8,8 @@ type AddThoughtModalProps = {
 function AddThoughtModal({ onSubmit, onClose }: AddThoughtModalProps) {
   const [newThought, setNewThought] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (newThought.trim() === "") return;
     onSubmit(newThought);
     setNewThought("");
@@ -16,10 +17,12 @@ function AddThoughtModal({ onSubmit, onClose }: AddThoughtModalProps) {
   };
 
   return (
-    <div
+    <form
+      onSubmit={handleSubmit}
+      aria-label="thought-form"
       style={{ border: "1px solid black", padding: "1rem", marginTop: "1rem" }}
     >
-      <h2>Write a thought</h2>
+      <h2>Write a Thought!</h2>
       <textarea
         value={newThought}
         onChange={(e) => setNewThought(e.target.value)}
@@ -28,9 +31,11 @@ function AddThoughtModal({ onSubmit, onClose }: AddThoughtModalProps) {
         cols={30}
       />
       <br />
-      <button onClick={handleSubmit}>Submit</button>
-      <button onClick={onClose}>Cancel</button>
-    </div>
+      <button type="submit">Submit</button>
+      <button type="button" onClick={onClose}>
+        Cancel
+      </button>
+    </form>
   );
 }
 
