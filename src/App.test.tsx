@@ -39,14 +39,14 @@ describe("App with localStorage", () => {
 
     // Open modal and add first thought
     fireEvent.click(screen.getByText("Add Thought!"));
-    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+    fireEvent.change(screen.getByPlaceholderText("Write here..."), {
       target: { value: "First thought" },
     });
     fireEvent.submit(screen.getByLabelText("thought-form"));
 
     // Open modal and add second thought
     fireEvent.click(screen.getByText("Add Thought!"));
-    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+    fireEvent.change(screen.getByPlaceholderText("Write here..."), {
       target: { value: "Second thought" },
     });
     fireEvent.submit(screen.getByLabelText("thought-form"));
@@ -67,7 +67,7 @@ describe("App with localStorage", () => {
 
     // Add thought
     fireEvent.click(screen.getByText("Add Thought!"));
-    fireEvent.change(screen.getByPlaceholderText("Write here"), {
+    fireEvent.change(screen.getByPlaceholderText("Write here..."), {
       target: { value: "Persistent thought" },
     });
     fireEvent.submit(screen.getByLabelText("thought-form"));

@@ -10,7 +10,7 @@ describe("AddThoughtModal", () => {
     render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
 
     //Write a thought
-    const textarea = screen.getByPlaceholderText("Write here");
+    const textarea = screen.getByPlaceholderText("Write here...");
     fireEvent.change(textarea, { target: { value: "My first thought" } });
     expect(textarea).toHaveValue("My first thought");
 
@@ -40,13 +40,18 @@ describe("AddThoughtModal", () => {
 
     render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
 
-    const textarea = screen.getByPlaceholderText("Write here");
+    const textarea = screen.getByPlaceholderText("Write here...");
 
     // Write a thought
     fireEvent.change(textarea, { target: { value: "Enter thought" } });
 
-    // Hit Enter
-    fireEvent.keyDown(textarea, { key: "Enter", code: "Enter", charCode: 13 });
+    // Hit Enter without shift
+    fireEvent.keyDown(textarea, {
+      key: "Enter",
+      code: "Enter",
+      charCode: 13,
+      shiftKey: false,
+    });
 
     // Expected: handleSubmit is called
     expect(handleSubmit).toHaveBeenCalledWith("Enter thought");
@@ -72,7 +77,7 @@ describe("AddThoughtModal", () => {
 
     render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
 
-    const textarea = screen.getByPlaceholderText("Write here");
+    const textarea = screen.getByPlaceholderText("Write here...");
     fireEvent.change(textarea, { target: { value: "    " } });
 
     const form = screen.getByLabelText("thought-form");

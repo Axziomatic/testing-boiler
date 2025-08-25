@@ -32,37 +32,46 @@ function App() {
   };
 
   return (
-    <div>
-      <AddThoughtButton onClick={() => setIsOpen(true)} />
-      {isOpen && (
-        <AddThoughtModal
-          onSubmit={(thought) => {
-            handleAddThought(thought);
-            setIsOpen(false);
-          }}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
-      <div style={{ marginTop: "2rem" }}>
-        <h2>Thought feed</h2>
-        {thoughts.length === 0 ? (
-          <p>No thoughts, head empty...</p>
-        ) : (
-          <ul>
-            {thoughts.map((thought) => (
-              <li key={thought.id}>
-                {thought.text}
-                <button
-                  onClick={() => handleDeleteThought(thought.id)}
-                  aria-label={`delete-thought-${thought.id}`}
-                  style={{ marginLeft: "1rem" }}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
+    <div className="bg-slate-400 flex flex-col justify-center items-center h-screen w-screen p-6">
+      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-lg w-full text-center">
+        <h1 className="text-4xl font-bold mb-6">Thoughts... 🤔</h1>
+
+        <AddThoughtButton onClick={() => setIsOpen(true)} />
+
+        {isOpen && (
+          <AddThoughtModal
+            onSubmit={(thought) => {
+              handleAddThought(thought);
+              setIsOpen(false);
+            }}
+            onClose={() => setIsOpen(false)}
+          />
         )}
+
+        <div className="mt-8 text-left">
+          <h2 className="text-xl font-semibold mb-2">Thought feed</h2>
+          {thoughts.length === 0 ? (
+            <p className="text-gray-500 italic">No thoughts, head empty...</p>
+          ) : (
+            <ul className="space-y-2">
+              {thoughts.map((thought) => (
+                <li
+                  key={thought.id}
+                  className="flex justify-between items-center bg-slate-100 rounded-lg p-2"
+                >
+                  <span>{thought.text}</span>
+                  <button
+                    onClick={() => handleDeleteThought(thought.id)}
+                    aria-label={`delete-thought-${thought.id}`}
+                    className="text-red-500 hover:text-red-700 font-semibold"
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
