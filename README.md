@@ -1,19 +1,34 @@
-# Kodbas för Enhets- och integrationstestning av React komponenter.
+# Thoughts...
 
-## Installation
+A simple React app for writing, viewing, and managing short thoughts. Users can add thoughts via a modal, see them in a feed, and delete them. Thoughts are saved in `localStorage` so they persist between sessions.
 
-Kör `npm install` för att installera alla paket.
+## Features
 
-## Utveckling
+- Add thoughts using a modal overlay
+- Submit thoughts via button or Enter key
+- Delete thoughts from the feed
+- Thoughts are persisted in localStorage
 
-Kör `npm run dev` för att starta utvecklingsservern.
+## Technologies
 
-## Testning
+- React + TypeScript
+- Tailwind CSS for styling
+- Vitest + React Testing Library for tests
 
-Kör `npm test` för att köra testerna. Kan köras utan att utvecklingsservern är igång.
+## Getting Started
 
-## Coverage
+### 1. Install dependencies
 
-Kör `npm run coverage` för att se hur stor del av kodbasen som testerna täcker.
+```bash
+npm install
+# or
+yarn
+```
 
-Observera att det nu finns en mapp [coverage](./coverage) med en massa filer (en hemsida). Du kan starta [index.html](./coverage/index.html) filen med live server för att öppna hemsidan. Där ser du mer detaljer om vad dina tester faktiskt testar och inte.
+### 2. Run the App
+
+npm run dev
+
+### 3. Run Tests
+
+npm test
