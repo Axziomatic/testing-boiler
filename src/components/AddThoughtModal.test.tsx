@@ -52,4 +52,33 @@ describe("AddThoughtModal", () => {
     expect(handleSubmit).toHaveBeenCalledWith("Enter thought");
     expect(handleClose).toHaveBeenCalled();
   });
+
+  it("does not submit when input is empty", () => {
+    const handleSubmit = vi.fn();
+    const handleClose = vi.fn();
+
+    render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
+
+    const form = screen.getByLabelText("thought-form");
+    fireEvent.submit(form);
+
+    expect(handleSubmit).not.toHaveBeenCalled();
+    expect(handleClose).not.toHaveBeenCalled();
+  });
+
+  it("does not submit when input only contains spaces", () => {
+    const handleSubmit = vi.fn();
+    const handleClose = vi.fn();
+
+    render(<AddThoughtModal onSubmit={handleSubmit} onClose={handleClose} />);
+
+    const textarea = screen.getByPlaceholderText("Write here");
+    fireEvent.change(textarea, { target: { value: "    " } });
+
+    const form = screen.getByLabelText("thought-form");
+    fireEvent.submit(form);
+
+    expect(handleSubmit).not.toHaveBeenCalled();
+    expect(handleClose).not.toHaveBeenCalled();
+  });
 });
